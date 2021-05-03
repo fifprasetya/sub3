@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="halo">Halo</string>
+    <string name="gituser">GitUser</string>
+    <string name="change_language">Ganti Bahasa</string>
+    <string name="search">Pencarian</string>
+    <string name="search_hint">Masukan Username</string>
+    <string name="users_name">Username</string>
+    <string name="id_user">ID Pengguna</string>
+    <string name="repo_url">URL Repositori</string>
+    <string name="location">Lokasi</string>
+    <string name="company">Perusahaan</string>
+    <string name="fullname">Nama Lengkap</string>
+    <string name="repository">Repositori</string>
+    <string name="number">NomorRepositori</string>
+    <string name="followers">Pengikut</string>
+    <string name="folwesnumber">JumlahPengikut</string>
+    <string name="following">Mengikuti</string>
+    <string name="folwingnumber">JumlahMengikuti</string>
+    <string name="tab_text_follower">Pengikut</string>
+    <string name="tab_text_following">Mengikuti</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="favorite">Favorit</string>
+    <string name="set_remainder">Alarm Pengingat</string>
+    <string name="key_remainder">Key Remainder</string>
+    <string name="text_remainder">Temukan Developer anda sekarang</string>
+</resources>

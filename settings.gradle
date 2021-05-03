@@ -1,0 +1,4 @@
+include ':consumerapp2'
+include ':consumerapp'
+include ':app'
+rootProject.name = "GitTalk"
