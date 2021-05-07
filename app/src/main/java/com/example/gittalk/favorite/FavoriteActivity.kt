@@ -2,19 +2,18 @@ package com.example.gittalk.favorite
 
 import android.content.Intent
 import android.database.ContentObserver
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gittalk.DetailActivity
 import com.example.gittalk.FavoriteModel
-import com.example.gittalk.R
 import com.example.gittalk.databinding.ActivityFavoriteBinding
 import com.example.gittalk.db.FavoriteContract.FavColumns.Companion.CONTENT_URI
-import com.example.gittalk.db.FavoriteHelper
 import com.example.gittalk.helper.MappingHelper
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +27,7 @@ class FavoriteActivity : AppCompatActivity() {
 
     companion object {
         private const val EXTRA_STATE = "EXTRA_STATE"
+        private val TAG = FavoriteActivity::class.java.simpleName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,15 +42,7 @@ class FavoriteActivity : AppCompatActivity() {
         adapter = FavoriteAdapter(this)
         binding.rvUser.adapter = adapter
 
-        adapter.setOnItemClickCallback(object : FavoriteAdapter.OnItemClickCallback{
-            override fun onItemClicked(data: FavoriteModel) {
-                Toast.makeText(this@FavoriteActivity, data.name, Toast.LENGTH_SHORT).show()
-                Intent(this@FavoriteActivity, DetailActivity::class.java).also{
-                    it.putExtra(DetailActivity.USER_NAME, data.name)
-                    startActivity(it)
-                }
-            }
-        })
+
         showLoading(true)
 
         val handlerThread = HandlerThread("DataObserver")
@@ -72,6 +64,18 @@ class FavoriteActivity : AppCompatActivity() {
                 adapter.setData(list)
             }
         }
+
+        adapter.setOnItemClickCallback(object : FavoriteAdapter.OnItemClickCallback{
+            override fun onItemClicked(data: FavoriteModel) {
+                Toast.makeText(this@FavoriteActivity, data.name, Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@FavoriteActivity, DetailActivity::class.java)
+                    intent.putExtra(DetailActivity.USER_NAME, data.name)
+                    intent.putExtra(DetailActivity.USER_ID, data.id)
+                    val id = data.id
+                    Log.d(TAG,"$id")
+                    startActivity(intent)
+                }
+        })
     }
 
 

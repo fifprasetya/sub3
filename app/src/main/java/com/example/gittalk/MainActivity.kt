@@ -3,27 +3,18 @@ package com.example.gittalk
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import com.example.gittalk.databinding.ActivityMainBinding
 import com.example.gittalk.favorite.FavoriteActivity
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
-import com.loopj.android.http.AsyncHttpClient
-import com.loopj.android.http.AsyncHttpResponseHandler
-import cz.msebera.android.httpclient.Header
-import org.json.JSONObject
-import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
@@ -54,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private fun showSelectedUser(user: UserItems) {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(DetailActivity.USER_NAME,user.name)
+        intent.putExtra(DetailActivity.USER_ID, user.id)
         startActivity(intent)
 
     }

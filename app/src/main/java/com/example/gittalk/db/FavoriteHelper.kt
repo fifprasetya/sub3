@@ -10,7 +10,6 @@ import com.example.gittalk.db.FavoriteContract.FavColumns.Companion.AVATAR
 import com.example.gittalk.db.FavoriteContract.FavColumns.Companion.NAME
 import com.example.gittalk.db.FavoriteContract.FavColumns.Companion.TABLE_NAME
 import com.example.gittalk.db.FavoriteContract.FavColumns.Companion._ID
-import kotlin.jvm.Throws
 
 class FavoriteHelper(context: Context) {
 

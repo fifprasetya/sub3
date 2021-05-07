@@ -1,7 +1,6 @@
 package com.example.gittalk
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,6 @@ import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import org.json.JSONArray
-import java.lang.Exception
 
 class FollowingViewModel : ViewModel() {
 
@@ -20,7 +18,7 @@ class FollowingViewModel : ViewModel() {
 
         val client = AsyncHttpClient()
         val url = "https://api.github.com/users/$users/following"
-        client.addHeader("Authorization", "token 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")
+        client.addHeader("Authorization", "token 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")
         client.addHeader("User-Agent", "request")
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(

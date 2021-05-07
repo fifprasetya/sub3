@@ -1,6 +1,7 @@
 package com.example.gittalk
 
 import android.content.ContentValues
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -28,7 +29,7 @@ import org.json.JSONObject
 class DetailActivity : AppCompatActivity() {
     private lateinit var profileCircleImageView: CircleImageView
     private lateinit var favoriteHelper: FavoriteHelper
-    private var statusFavorite: Boolean = false
+    private var statusFavorites: Boolean = false
     var nameUser: String? = null
     var idUser: String = ""
     var avatarUser: String? = null
@@ -37,10 +38,13 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val USER_NAME = "username"
+        const val USER_ID = "id"
         private val TAB_TITLES = intArrayOf(
             R.string.tab_text_follower,
             R.string.tab_text_following
         )
+
+        private val TAG = DetailActivity::class.java.simpleName
 
     }
 
@@ -56,7 +60,6 @@ class DetailActivity : AppCompatActivity() {
         favoriteHelper.open()
 
 
-
         val sectionsPagerAdapter = SectionsPagerAdapter(this)
         val viewPager: ViewPager2 = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
@@ -70,54 +73,36 @@ class DetailActivity : AppCompatActivity() {
 
         getDetail()
         uriWithId = Uri.parse(CONTENT_URI.toString() + "/" + idUser)
-
-
-
-        /*val cursor = favoriteHelper.queryById(idUser)
-        cursor.moveToFirst()
-        val arrayList = ArrayList<FavoriteModel>()
-        var favoriteModel: FavoriteModel
-        if (cursor.count > 0) {
-            do {
-                favoriteModel = FavoriteModel()
-                favoriteModel.id = cursor.getInt(cursor.getColumnIndexOrThrow(_ID))
-                favoriteModel.name = cursor.getString(cursor.getColumnIndexOrThrow(NAME))
-                if (idUser == favoriteModel.id.toString()){
-                    statusFavorite = true
-                    binding.test.text = favoriteModel.id.toString()
-                }
-                else {
-                    binding.test.text = favoriteModel.name
-                    statusFavorite = false
-                }
-
-                favoriteModel.avatar = cursor.getString(cursor.getColumnIndexOrThrow(AVATAR))
-
-                arrayList.add(favoriteModel)
-                cursor.moveToNext()
-
-            } while (!cursor.isAfterLast)
+        val userId : String = intent.getStringExtra(USER_ID)
+        Log.d(TAG,"$userId")
+        Log.d(TAG, "Mencari Data")
+        val cursor: Cursor = favoriteHelper.queryById(userId)
+        if (cursor.moveToNext()) {
+            statusFavorites = true
+            setStatusFavorite(true)
+            Log.d(TAG, " $userId Data ditemukan")
+        } else {
+            Log.d(TAG, " $userId Data tidak ditemukan")
         }
-        cursor.close()
-       */
+        Log.d(TAG, "Mencari Data Selesai")
 
 
-        setStatusFavorite(statusFavorite)
-        binding.toggleFav.setOnClickListener() {
-            statusFavorite = !statusFavorite
-            if (statusFavorite) {
+        binding.toggleFav.setOnCheckedChangeListener { buttonView, isChecked ->
+            statusFavorites = isChecked
+            //statusFavorite = !statusFavorite
+            if (statusFavorites) {
                 val values = ContentValues()
                 values.put(_ID, idUser)
                 values.put(NAME, nameUser)
                 values.put(AVATAR, avatarUser)
                 values.put(REPOSITORY, repositoryUser)
-                contentResolver.insert(uriWithId, values)
-                //favoriteHelper.insert(values)
+                //contentResolver.insert(uriWithId, values)
+                favoriteHelper.insert(values)
                 Toast.makeText(this, "Favorite ditambahkan", Toast.LENGTH_SHORT).show()
-                setStatusFavorite(statusFavorite)
+                //setStatusFavorite(statusFavorite)
             } else {
-                contentResolver.delete(uriWithId,null,null)
-                //favoriteHelper.deleteById(idUser)
+                //contentResolver.delete(uriWithId,null,null)
+                favoriteHelper.deleteById(idUser)
                 Toast.makeText(this, "$idUser dihapus", Toast.LENGTH_SHORT).show()
             }
         }
@@ -147,7 +132,7 @@ class DetailActivity : AppCompatActivity() {
 
         val client = AsyncHttpClient()
         val url = "https://api.github.com/users/$username"
-        client.addHeader("Authorization", "token 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")
+        client.addHeader("Authorization", "token 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")
         client.addHeader("User-Agent", "request")
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
@@ -173,7 +158,18 @@ class DetailActivity : AppCompatActivity() {
                     idUser = responseObject.getString("id")
                     avatarUser = responseObject.getString("avatar_url")
                     repositoryUser = responseObject.getString("public_repos")
-
+        /*
+                    Log.d(TAG, "Mencari Data")
+                    val cursor: Cursor = favoriteHelper.queryById(idUser)
+                    if (cursor.moveToNext()){
+                        statusFavorites = true
+                        setStatusFavorite(true)
+                        Log.d(TAG," $idUser Data ditemukan" )
+                    }else{
+                        Log.d(TAG, " $idUser Data tidak ditemukan")
+                    }
+                    Log.d(TAG, "Mencari Data Selesai")
+                    */
                     var profileImageUrl = responseObject.getString("avatar_url")
                     profileCircleImageView = binding.imgItemPhoto
 
